@@ -5,29 +5,35 @@
   "main": "src/index.js",
   "scripts": {
     "dev": "concurrently \"npm run dev:mcp\" \"npm run dev:memory\"",
-    "dev:mcp": "tsx watch src/mcp-servers/markdown-server.ts",
-    "dev:memory": "python src/memory-sync/marley_claude_bridge.py",
-    "build": "tsc && python -m py_compile src/memory-sync/*.py",
+    "dev:mcp": "tsx watch src/mcp-servers/basic-server.ts",
+    "dev:memory": "cd venv && source bin/activate && python ../src/memory-sync/marley_claude_bridge.py",
+    "build": "tsc",
     "test": "jest",
     "format": "prettier --write .",
     "lint:md": "markdownlint docs/**/*.md",
-    "spectral:align": "python src/formatters/spectral_walker.py",
+    "spectral:align": "cd venv && source bin/activate && python ../src/memory-sync/marley_claude_bridge.py",
     "hive:spawn": "docker-compose up -d"
   },
   "dependencies": {
-    "@mcp/server": "^0.3.0",
+    "@modelcontextprotocol/sdk": "^0.5.0",
     "remark": "^15.0.1",
+    "remark-parse": "^11.0.0",
+    "remark-stringify": "^11.0.0",
     "remark-lint": "^9.1.2",
     "unified": "^11.0.4",
     "ws": "^8.14.2",
-    "express": "^4.18.2"
+    "express": "^4.18.2",
+    "fastify": "^4.24.3"
   },
   "devDependencies": {
     "@types/node": "^20.0.0",
+    "@types/ws": "^8.5.10",
     "tsx": "^4.0.0",
     "typescript": "^5.3.0",
     "concurrently": "^8.2.0",
     "jest": "^29.7.0",
-    "prettier": "^3.1.0"
+    "@types/jest": "^29.5.5",
+    "prettier": "^3.1.0",
+    "markdownlint-cli": "^0.37.0"
   }
 }

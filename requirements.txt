@@ -1,29 +1,7 @@
-# MCP and Claude Integration
-mcp-server>=0.3.0
-anthropic>=0.8.0
-
-# Markdown Processing
-markdown>=3.5.0
-pymdown-extensions>=10.0.0
-markdown-it-py>=3.0.0
-
-# Memory and Airtable Sync
+aiohttp>=3.8.0
 airtable-python-wrapper>=0.15.3
-requests>=2.31.0
-python-dotenv>=1.0.0
-
-# SpectralScrollWalker Dependencies
-numpy>=1.24.0
-scipy>=1.10.0
-networkx>=3.1.0
-
-# Async and WebSocket Support
-asyncio-mqtt>=0.13.0
-websockets>=11.0.0
-fastapi>=0.104.0
-uvicorn>=0.24.0
-
-# Development Tools
-pytest>=7.4.0
-black>=23.9.0
-flake8>=6.1.0
+anthropic>=0.7.0
+fastapi>=0.100.0
+uvicorn>=0.20.0
+python-dotenv>=0.20.0
+websockets>=11.0

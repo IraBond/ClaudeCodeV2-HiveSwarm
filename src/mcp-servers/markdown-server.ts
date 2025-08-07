@@ -5,8 +5,8 @@
  * Harmonizes markdown across Obsidian, GitHub, Hugo, and Pandoc dialects
  */
 
-import { Server } from '@mcp/server';
-import { WebSocketTransport } from '@mcp/server/websocket';
+import { Server } from '@modelcontextprotocol/sdk/server/index.js';
+import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
 import { unified } from 'unified';
 import remarkParse from 'remark-parse';
 import remarkLint from 'remark-lint';
@@ -33,6 +33,10 @@ class MarkdownHarmonizer {
     this.server = new Server({
       name: 'markdown-harmonizer',
       version: '2.0.0'
+    }, {
+      capabilities: {
+        tools: {}
+      }
     });
 
     this.setupTools();
@@ -40,57 +44,89 @@ class MarkdownHarmonizer {
 
   private setupTools() {
     // Format Detection Tool
-    this.server.tool('detect_markdown_format', {
-      description: 'Analyze markdown content and detect dialect/format patterns',
-      inputSchema: {
-        type: 'object',
-        properties: {
-          content: { type: 'string' },
-          deepScan: { type: 'boolean', default: false }
-        },
-        required: ['content']
+    this.server.setRequestHandler('tools/call', async (request) => {
+      const { name, arguments: args } = request.params;
+      
+      if (name === 'detect_markdown_format') {
+        const { content, deepScan } = args as { content: string; deepScan?: boolean };
+        return {
+          content: [{
+            type: 'text' as const,
+            text: JSON.stringify(await this.detectFormat(content, deepScan))
+          }]
+        };
       }
-    }, async ({ content, deepScan }) => {
-      return await this.detectFormat(content, deepScan);
-    });
 
-    // Harmonization Tool
-    this.server.tool('harmonize_markdown', {
-      description: 'Convert markdown between dialects while preserving semantic meaning',
-      inputSchema: {
-        type: 'object',
-        properties: {
-          content: { type: 'string' },
-          sourceDialect: { 
-            type: 'string', 
-            enum: ['obsidian', 'github', 'hugo', 'pandoc'] 
-          },
-          targetDialect: { 
-            type: 'string', 
-            enum: ['obsidian', 'github', 'hugo', 'pandoc'] 
-          },
-          preserveWikilinks: { type: 'boolean', default: true },
-          enableMath: { type: 'boolean', default: true }
-        },
-        required: ['content', 'sourceDialect', 'targetDialect']
+      
+      if (name === 'harmonize_markdown') {
+        const request = args as MarkdownHarmonizationRequest;
+        return {
+          content: [{
+            type: 'text' as const,
+            text: JSON.stringify(await this.harmonizeContent(request))
+          }]
+        };
       }
-    }, async (request: MarkdownHarmonizationRequest) => {
-      return await this.harmonizeContent(request);
-    });
 
-    // SpectralScrollWalker Integration
-    this.server.tool('spectral_alignment', {
-      description: 'Analyze document structure for spectral resonance patterns',
-      inputSchema: {
-        type: 'object',
-        properties: {
-          content: { type: 'string' },
-          analysisDepth: { type: 'number', default: 3 }
-        },
-        required: ['content']
+      
+      if (name === 'spectral_alignment') {
+        const { content, analysisDepth } = args as { content: string; analysisDepth?: number };
+        return {
+          content: [{
+            type: 'text' as const,
+            text: JSON.stringify(await this.analyzeSpectralAlignment(content, analysisDepth || 3))
+          }]
+        };
       }
-    }, async ({ content, analysisDepth }) => {
-      return await this.analyzeSpectralAlignment(content, analysisDepth);
+      
+      throw new Error(`Unknown tool: ${name}`);
+    });
+    
+    // List available tools
+    this.server.setRequestHandler('tools/list', async () => {
+      return {
+        tools: [
+          {
+            name: 'detect_markdown_format',
+            description: 'Analyze markdown content and detect dialect/format patterns',
+            inputSchema: {
+              type: 'object',
+              properties: {
+                content: { type: 'string' },
+                deepScan: { type: 'boolean' }
+              },
+              required: ['content']
+            }
+          },
+          {
+            name: 'harmonize_markdown',
+            description: 'Convert markdown between dialects while preserving semantic meaning',
+            inputSchema: {
+              type: 'object',
+              properties: {
+                content: { type: 'string' },
+                sourceDialect: { type: 'string', enum: ['obsidian', 'github', 'hugo', 'pandoc'] },
+                targetDialect: { type: 'string', enum: ['obsidian', 'github', 'hugo', 'pandoc'] },
+                preserveWikilinks: { type: 'boolean' },
+                enableMath: { type: 'boolean' }
+              },
+              required: ['content', 'sourceDialect', 'targetDialect']
+            }
+          },
+          {
+            name: 'spectral_alignment',
+            description: 'Analyze document structure for spectral resonance patterns',
+            inputSchema: {
+              type: 'object',
+              properties: {
+                content: { type: 'string' },
+                analysisDepth: { type: 'number' }
+              },
+              required: ['content']
+            }
+          }
+        ]
+      };
     });
   }
 
@@ -252,16 +288,16 @@ class MarkdownHarmonizer {
     };
   }
 
-  async start(port: number = 3000) {
-    const transport = new WebSocketTransport(`ws://localhost:${port}`);
-    await this.server.listen(transport);
-    console.log(`🌀 Markdown Harmonization MCP Server listening on port ${port}`);
+  async start() {
+    const transport = new StdioServerTransport();
+    await this.server.connect(transport);
+    console.log(`🌀 Markdown Harmonization MCP Server started`);
     console.log(`⸻ SpectralScrollWalker alignment threads: ACTIVE`);
   }
 }
 
 // Start server
-if (require.main === module) {
+if (import.meta.url === `file://${process.argv[1]}`) {
   const harmonizer = new MarkdownHarmonizer();
   harmonizer.start().catch(console.error);
 }
