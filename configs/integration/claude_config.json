@@ -1,0 +1,17 @@
+{
+  "agent": "Claude",
+  "environment": "production",
+  "memory": {
+    "engine": "EchoDaemon Memory Engine",
+    "branch": "main",
+    "connection": {
+      "DATABASE_URL": "postgresql://EchoDaemon%20Memory%20Engine_owner:npg_WTNdowki8uL1@ep-calm-rain-a82il2oe-pooler.eastus2.azure.neon.tech/EchoDaemon%20Memory%20Engine?sslmode=require&channel_binding=require"
+    }
+  },
+  "auth": {
+    "stack_project_id": "b573966c-33dd-48c9-98bd-e4065070d534",
+    "publishable_client_key": "pck_esjyvgh9be7ccxtjk63y7hn8ae2804tp8jy2dqv4qxbe0",
+    "secret_server_key": "ssk_tqnd9qcm3c8fz3gmk6jk7q7scdnj962tpgvjv7xzr0ecg",
+    "jwks_url": "https://api.stack-auth.com/api/v1/projects/b573966c-33dd-48c9-98bd-e4065070d534/.well-known/jwks.json"
+  }
+}

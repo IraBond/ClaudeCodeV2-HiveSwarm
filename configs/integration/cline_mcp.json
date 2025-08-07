@@ -1,0 +1,23 @@
+{
+  "cli_agent": "cline",
+  "mcp_version": "v2.1",
+  "target_agent": "Claude",
+  "env": "production",
+  "neon": {
+    "primary": {
+      "name": "EchoDaemon Memory Engine",
+      "branch": "main",
+      "url": "postgresql://EchoDaemon%20Memory%20Engine_owner:npg_WTNdowki8uL1@ep-calm-rain-a82il2oe-pooler.eastus2.azure.neon.tech/EchoDaemon%20Memory%20Engine?sslmode=require&channel_binding=require"
+    },
+    "fallback": {
+      "name": "neondb",
+      "branch": "production",
+      "url": "postgresql://neondb_owner:npg_4GH2nNgwtAmz@ep-quiet-wind-aeb6q0cl-pooler.c-2.us-east-2.aws.neon.tech/neondb?sslmode=require&channel_binding=require"
+    }
+  },
+  "auth": {
+    "project_id": "b573966c-33dd-48c9-98bd-e4065070d534",
+    "client_key": "pck_esjyvgh9be7ccxtjk63y7hn8ae2804tp8jy2dqv4qxbe0",
+    "server_key": "ssk_tqnd9qcm3c8fz3gmk6jk7q7scdnj962tpgvjv7xzr0ecg"
+  }
+}
