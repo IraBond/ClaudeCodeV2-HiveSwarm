@@ -1,0 +1,35 @@
+{
+  "name": "ClaudeCode-HiveSwarm",
+  "build": {
+    "dockerfile": "Dockerfile"
+  },
+  "settings": {
+    "terminal.integrated.shell.linux": "/bin/bash",
+    "editor.formatOnSave": true,
+    "markdown-all-in-one.extension.italic.indicator": "_",
+    "markdown-all-in-one.extension.bold.indicator": "**",
+    "markdown-all-in-one.extension.unorderedList.marker": "-",
+    "[markdown]": {
+      "editor.defaultFormatter": "yzhang.markdown-all-in-one"
+    }
+  },
+  "extensions": [
+    "yzhang.markdown-all-in-one",
+    "esbenp.prettier-vscode",
+    "bierner.markdown-preview-github-styles",
+    "foam.foam-vscode",
+    "ms-python.python",
+    "ms-vscode.vscode-typescript-next"
+  ],
+  "forwardPorts": [3000, 8080, 5173],
+  "remoteUser": "vscode",
+  "features": {
+    "ghcr.io/devcontainers/features/node:1": {
+      "version": "20"
+    },
+    "ghcr.io/devcontainers/features/python:1": {
+      "version": "3.11"
+    }
+  },
+  "postCreateCommand": "npm install && pip install -r requirements.txt"
+}

@@ -1,0 +1,50 @@
+version: '3.8'
+
+services:
+  hive-core:
+    build:
+      context: .
+      dockerfile: .devcontainer/Dockerfile
+    container_name: claudecode-hive
+    volumes:
+      - .:/workspace
+      - /var/run/docker.sock:/var/run/docker.sock
+    ports:
+      - "3000:3000"  # MCP Markdown Server
+      - "8080:8080"  # Memory Sync Server
+      - "5173:5173"  # Dev Server
+    environment:
+      - NODE_ENV=development
+      - MARLEY_MEMORY_ENDPOINT=http://localhost:8080
+      - CLAUDE_MCP_SERVER=http://localhost:3000
+    networks:
+      - hive-network
+
+  markdown-mcp:
+    build:
+      context: ./src/mcp-servers
+      dockerfile: Dockerfile.markdown
+    container_name: markdown-mcp-server
+    ports:
+      - "3001:3000"
+    volumes:
+      - ./config:/app/config:ro
+    networks:
+      - hive-network
+
+  memory-sync:
+    build:
+      context: ./src/memory-sync
+      dockerfile: Dockerfile.memory
+    container_name: marley-claude-sync
+    ports:
+      - "8081:8080"
+    environment:
+      - AIRTABLE_API_KEY=${AIRTABLE_API_KEY}
+      - CLAUDE_API_KEY=${CLAUDE_API_KEY}
+    networks:
+      - hive-network
+
+networks:
+  hive-network:
+    driver: bridge

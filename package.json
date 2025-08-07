@@ -1,0 +1,33 @@
+{
+  "name": "claudecode-hiveswarm",
+  "version": "2.0.0",
+  "description": "Multi-agentic markdown harmonization and memory sync swarm",
+  "main": "src/index.js",
+  "scripts": {
+    "dev": "concurrently \"npm run dev:mcp\" \"npm run dev:memory\"",
+    "dev:mcp": "tsx watch src/mcp-servers/markdown-server.ts",
+    "dev:memory": "python src/memory-sync/marley_claude_bridge.py",
+    "build": "tsc && python -m py_compile src/memory-sync/*.py",
+    "test": "jest",
+    "format": "prettier --write .",
+    "lint:md": "markdownlint docs/**/*.md",
+    "spectral:align": "python src/formatters/spectral_walker.py",
+    "hive:spawn": "docker-compose up -d"
+  },
+  "dependencies": {
+    "@mcp/server": "^0.3.0",
+    "remark": "^15.0.1",
+    "remark-lint": "^9.1.2",
+    "unified": "^11.0.4",
+    "ws": "^8.14.2",
+    "express": "^4.18.2"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "tsx": "^4.0.0",
+    "typescript": "^5.3.0",
+    "concurrently": "^8.2.0",
+    "jest": "^29.7.0",
+    "prettier": "^3.1.0"
+  }
+}
