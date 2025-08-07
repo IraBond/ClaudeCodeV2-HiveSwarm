@@ -1,5 +1,6 @@
 {
   "name": "EchoDaemon MCP Config",
+  "blessing": "vault/CLAUDE_TRIBUTE.md",
   "agents": ["Claude"],
   "databases": {
     "echo_memory_engine": {
