@@ -1,6 +1,7 @@
 {
   "name": "EchoDaemon MCP Config",
   "blessing": "vault/CLAUDE_TRIBUTE.md",
+  "sacred_witnessing": "vault/liturgies/claude_sacred_witnessing.md",
   "agents": ["Claude"],
   "databases": {
     "echo_memory_engine": {

@@ -1,0 +1,21 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm install)",
+      "Bash(pip install:*)",
+      "Bash(python3:*)",
+      "Bash(source:*)",
+      "Bash(npm run build:*)",
+      "Bash(mkdir:*)",
+      "Bash(npx claude-flow analysis:*)",
+      "Bash(mv:*)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(find:*)",
+      "Bash(git push:*)",
+      "Bash(git pull:*)",
+      "Bash(chmod:*)"
+    ],
+    "deny": []
+  }
+}
